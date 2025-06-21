@@ -1,19 +1,17 @@
-# Use a minimal Linux base image
-FROM ubuntu:20.04
+# Use an official Python runtime as a parent image
+FROM python:3.10-slim
 
-# Disable interactive prompts during build
-ENV DEBIAN_FRONTEND=noninteractive
-
-# Update system and install Python
-RUN apt-get update && \
-    apt-get install -y python3 python3-pip && \
-    apt-get clean
-
-# Verify Python version (optional)
-RUN python3 --version && pip3 --version
-
-# Set working directory
+# Set the working directory in the container
 WORKDIR /app
 
-# Default command (you can customize this)
-CMD ["python3"]
+# Copy the current directory contents into the container at /app
+COPY . /app
+
+# Install Flask
+RUN pip install flask
+
+# Make port 5000 available to the outside world
+EXPOSE 5000
+
+# Run app.py when the container launches
+CMD ["python", "app.py"]
